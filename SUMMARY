@@ -1,0 +1,1 @@
+解除小红书（com.xingin.xhs）「作者已关闭保存/下载」限制，让受限笔记也能长按保存图片到相册。Hook MediaSaveConfig 强制放行，纯 Java 无 native。仅供个人学习与逆向研究。
