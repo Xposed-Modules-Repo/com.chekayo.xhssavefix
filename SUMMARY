@@ -1,1 +1,1 @@
-小红书（com.xingin.xhs）增强 LSPosed 模块：① 解除「作者关闭保存/下载」——兼容旧版 disable_save 与新版服务端权限数组（image_download/video_download）② 视频保存到相册（/video/save 接口门改写 + status 轮询放行）③ 保存去水印——右下角作者水印与左下角「AI生成」标签都不再叠加。纯 Java 无 native，仅供个人学习与逆向研究。
+小红书（com.xingin.xhs）增强 LSPosed 模块：① 解除「作者关闭保存/下载」——兼容旧版 disable_save 与新版服务端权限数组（image_download/video_download）② 视频保存到相册（/video/save 接口门改写 + status 轮询放行）③ 保存去水印——右下角作者水印与左下角「AI生成」标签都不再叠加 ④ 更新提示——主页顶部横幅 + 设置页 SaveFix 入口。纯 Java 无 native，仅供个人学习与逆向研究。

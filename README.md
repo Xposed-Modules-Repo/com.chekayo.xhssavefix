@@ -6,7 +6,7 @@
 
 ## 原理（一段话）
 
-保存被拦有图片两道门 + 视频一道服务端接口门，模块全拆：
+保存被拦有**两条门**，模块都拆：
 
 1. **旧门**：笔记数据里 `MediaSaveConfig` 的 JSON 字段 **`disable_save: true`** 表示作者关闭了保存。客户端在下载路径（`DownloadController.onDownloadClick`）里检查 getter `b()`，为 `true` 就弹 toast 并 `return`。模块把 `b()` 强制返回 `false`。
 2. **新门**（v9.33.x 服务端灰度，[issue #2](https://github.com/haikow/xhs-savefix/issues/2)）：笔记详情改为下发权限数组 `[{"reason":"作者已关闭下载权限，无法保存","type":"image_download","enable":false},...]`，模型 `com.xingin.entities.notedetail.FunctionSwitch`（getter `a()`=enable、`c()`=type）。长按面板和分享面板的「保存图片」按 `enable=false` 置灰。模块对 `image_download`/`video_download` 类型把 `a()` 强制返回 `true`（`ShareInfoDetail$Operate` 的 `disable` 同理）。
@@ -14,6 +14,8 @@
 **去水印**：保存时的水印是客户端 `jm7.j.a()` 合成的，受两个服务端字段控制——作者水印看 `MediaSaveConfig.c()`（`disable_watermark`，**true 才是不画**，旧版模块把它强制 `false` 恰恰会把水印画上），「AI生成」标签看 `ImageBean.u()`（`disable_ai`）。模块把 `c()` 恒 `true`、`u()` 恒 `true`，另兜底 hook `jm7.j.b()`（AI 标签位图构造）返回 `null`。
 
 **视频保存**：视频还有第三道门——点保存时客户端会请求服务端 `/api/sns/v10/note/video/save`，作者关闭时服务端直接返回 `disable:true` 且不给下载地址。模块平时缓存浏览过的视频播放直链，拦到该接口被拒时改写响应注入直链，让客户端正常下载落盘（详见逆向文档 8.4）。
+
+**更新提示**：打开小红书主页时自动检查更新（jsDelivr/fastly/ghproxy 镜像链拉取 `version.json`），有新版本会在顶部弹横幅，点击直达下载，✕ 可忽略该版本；「设置」页右下角有红色「SaveFix ⚙」悬浮入口，随时检查更新 / 查看 changelog。
 
 完整逆向过程见 **[逆向分析与思路.md](https://github.com/haikow/xhs-savefix/blob/main/逆向分析与思路.md)**。
 
